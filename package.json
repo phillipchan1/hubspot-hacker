@@ -10,7 +10,7 @@
   "main": "server/index.js",
   "name": "hubspot-hacker",
   "scripts": {
-    "start": "nodemon",
+    "start": "node server/index.js",
     "test": "node test"
   },
   "version": "1.0.0",
