@@ -3,6 +3,8 @@
 var express = require('express');
 var router = express.Router();
 
+var contacts = require('./contacts/contacts');
+
 router.get('/new-contact', function(req, res, next) {
 
 });
