@@ -29,8 +29,8 @@ app.all('/*', function ( req, res ) {
 });
 
 var options = {
-	key: fs.readFileSync('server/ssl/mykey.pem'),
-	cert: fs.readFileSync('server/ssl/my-cert.pem')
+	key: fs.readFileSync('server/ssl/account.key'),
+	cert: fs.readFileSync('server/ssl/domain.key')
 }
 
 var httpsServer = https.createServer(options, app);
