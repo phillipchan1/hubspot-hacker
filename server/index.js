@@ -28,10 +28,10 @@ app.use('/web-hooks/', webhookRoutes);
 //         .sendFile(process.cwd() + '/client/index.html');
 // });
 
-app.all('/.well-known/acme-challenge/MxrLikk23TyEzGajr6d2ZPJTe2dQHYo3BBnjtxj6WjQ', function(req, res) {
+app.all('/.well-known/acme-challenge/N-DVUBlYm77BE5mPOos78NsX12x3S51xFLLq1i4ymi0', function(req, res) {
 	res
 		.status(200)
-		.sendFile(process.cwd() + '/.well-known/acme-challenge/MxrLikk23TyEzGajr6d2ZPJTe2dQHYo3BBnjtxj6WjQ');
+		.sendFile(process.cwd() + '/.well-known/acme-challenge/N-DVUBlYm77BE5mPOos78NsX12x3S51xFLLq1i4ymi0');
 })
 
 // var options = {
