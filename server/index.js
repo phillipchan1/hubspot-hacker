@@ -28,10 +28,10 @@ app.use('/web-hooks/', webhookRoutes);
 //         .sendFile(process.cwd() + '/client/index.html');
 // });
 
-var filename = '/.well-known/acme-challenge/IKU_vNPAzqvEtjX5eI6LtmnbsVQelNVN9S_XZW6yYxc';
+var filename = '/.well-known/acme-challenge/jEbdsh56SXs5jNYZA6M7GcBPrITcKdOlIT7o01scDdE';
 
 app.all(filename, function(req, res) {
-	fs.readFile('.well-known/acme-challenge/IKU_vNPAzqvEtjX5eI6LtmnbsVQelNVN9S_XZW6yYxc', "binary", function(err, file) {
+	fs.readFile('.well-known/acme-challenge/jEbdsh56SXs5jNYZA6M7GcBPrITcKdOlIT7o01scDdE', "binary", function(err, file) {
       if(err) {
         res.writeHead(500, {"Content-Type": "text/plain"});
         res.write(err + "\n");
