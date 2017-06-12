@@ -28,18 +28,18 @@ app.all('/*', function ( req, res ) {
         .sendFile(process.cwd() + '/client/index.html');
 });
 
-var options = {
-	key: fs.readFileSync('server/ssl/account.key'),
-	cert: fs.readFileSync('server/ssl/domain.key')
-}
+// var options = {
+// 	key: fs.readFileSync('server/ssl/account.key'),
+// 	cert: fs.readFileSync('server/ssl/domain.key')
+// }
 
-var httpsServer = https.createServer(options, app);
+// var httpsServer = https.createServer(options, app);
 
-httpsServer.listen(80, function() {
-	console.log('server running at 80');
-});
+// httpsServer.listen(80, function() {
+// 	console.log('server running at 80');
+// });
 
 // have our app listen on port 3000
-// app.listen(process.env.PORT || 80, function() {
-// 	console.log('Service on running on 80');
-// });
+app.listen(process.env.PORT || 80, function() {
+	console.log('Service on running on 80');
+});
