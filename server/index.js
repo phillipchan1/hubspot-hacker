@@ -43,20 +43,20 @@ app.all(filename, function(req, res) {
       res.write(file, "binary");
       res.end();
     });
-})
-
-// var options = {
-// 	key: fs.readFileSync('server/ssl/account.key'),
-// 	cert: fs.readFileSync('server/ssl/domain.key')
-// }
-
-// var httpsServer = https.createServer(options, app);
-
-// httpsServer.listen(80, function() {
-// 	console.log('server running at 80');
-// });
-
-// have our app listen on port 3000
-app.listen(process.env.PORT || 80, function() {
-	console.log('Service on running on 80');
 });
+
+var options = {
+	cert: fs.readFileSync('server/ssl/chained.pem'),
+	key: fs.readFileSync('server/ssl/domain.key')
+};
+
+var httpsServer = https.createServer(options, app);
+
+httpsServer.listen(80, function() {
+	console.log('server running at 80');
+});
+
+// // have our app listen on port 3000
+// app.listen(process.env.PORT || 80, function() {
+// 	console.log('Service on running on 80');
+// });
