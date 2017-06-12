@@ -21,12 +21,12 @@ var webhookRoutes = require('./web-hooks/web-hooks.routes');
 app.use('/web-hooks/', webhookRoutes);
 
 // direct all other routes to client-side app
-// app.all('/*', function ( req, res ) {
-//     res
-//         .status( 200 )
-//         .set( { 'content-type': 'text/html; charset=utf-8' } )
-//         .sendFile(process.cwd() + '/client/index.html');
-// });
+app.all('/*', function ( req, res ) {
+    res
+        .status( 200 )
+        .set( { 'content-type': 'text/html; charset=utf-8' } )
+        .sendFile(process.cwd() + '/client/index.html');
+});
 
 var filename = '/.well-known/acme-challenge/Cv_ngx0jR2mYmjm09rTxUs7YyP2RUescTiTrrHnixuw';
 
@@ -52,11 +52,11 @@ var options = {
 
 var httpsServer = https.createServer(options, app);
 
-httpsServer.listen(80, function() {
-	console.log('server running at 80');
+httpsServer.listen(8443, function() {
+	console.log('https server running at 8443');
 });
 
-// // have our app listen on port 3000
-// app.listen(process.env.PORT || 80, function() {
-// 	console.log('Service on running on 80');
-// });
+// // have our app listen on port
+app.listen(process.env.PORT || 80, function() {
+	console.log('Service on running on 80');
+});
