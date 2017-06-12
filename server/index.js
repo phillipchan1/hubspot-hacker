@@ -3,6 +3,8 @@
 'use strict';
 var express = require('express');
 var parser = require('body-parser');
+var fs = require('fs');
+var https = require('https');
 
 // create instance of the server to variable app
 var app = express();
@@ -26,7 +28,18 @@ app.all('/*', function ( req, res ) {
         .sendFile(process.cwd() + '/client/index.html');
 });
 
-// have our app listen on port 3000
-app.listen(process.env.PORT || 80, function() {
-	console.log('Service on running on 80');
+var options = {
+	key: fs.readFileSync('server/ssl/mykey.pem'),
+	cert: fs.readFileSync('server/ssl/my-cert.pem')
+}
+
+var httpsServer = https.createServer(options, app);
+
+httpsServer.listen(80, function() {
+	console.log('server running at 80');
 });
+
+// have our app listen on port 3000
+// app.listen(process.env.PORT || 80, function() {
+// 	console.log('Service on running on 80');
+// });
