@@ -21,12 +21,18 @@ var webhookRoutes = require('./web-hooks/web-hooks.routes');
 app.use('/web-hooks/', webhookRoutes);
 
 // direct all other routes to client-side app
-app.all('/*', function ( req, res ) {
-    res
-        .status( 200 )
-        .set( { 'content-type': 'text/html; charset=utf-8' } )
-        .sendFile(process.cwd() + '/client/index.html');
-});
+// app.all('/*', function ( req, res ) {
+//     res
+//         .status( 200 )
+//         .set( { 'content-type': 'text/html; charset=utf-8' } )
+//         .sendFile(process.cwd() + '/client/index.html');
+// });
+
+app.all('/.well-known/acme-challenge/MxrLikk23TyEzGajr6d2ZPJTe2dQHYo3BBnjtxj6WjQ', function(req, res) {
+	res
+		.status(200)
+		.sendFile(process.cwd() + '/.well-known/acme-challenge/MxrLikk23TyEzGajr6d2ZPJTe2dQHYo3BBnjtxj6WjQ');
+})
 
 // var options = {
 // 	key: fs.readFileSync('server/ssl/account.key'),
