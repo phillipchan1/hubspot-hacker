@@ -14,11 +14,15 @@ app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
 
 // client routes
-app.use('/', express.static('/client/'));
+app.use('/', express.static('client/'));
 
 // routes
 var webhookRoutes = require('./web-hooks/web-hooks.routes');
 app.use('/web-hooks/', webhookRoutes);
+
+var apiRoutes = require('./api/api.routes.js');
+app.use('/api/', apiRoutes);
+
 
 // direct all other routes to client-side app
 app.all('/*', function ( req, res ) {
@@ -28,22 +32,25 @@ app.all('/*', function ( req, res ) {
         .sendFile(process.cwd() + '/client/index.html');
 });
 
-var filename = '/.well-known/acme-challenge/Cv_ngx0jR2mYmjm09rTxUs7YyP2RUescTiTrrHnixuw';
+// refresh oauth token ever 3 hours
+require('./oauth/oauth').maintainOauthConnection();
 
-app.all(filename, function(req, res) {
-	fs.readFile('.well-known/acme-challenge/Cv_ngx0jR2mYmjm09rTxUs7YyP2RUescTiTrrHnixuw', "binary", function(err, file) {
-      if(err) {
-        res.writeHead(500, {"Content-Type": "text/plain"});
-        res.write(err + "\n");
-        res.end();
-        return;
-      }
+// var filename = '/.well-known/acme-challenge/Cv_ngx0jR2mYmjm09rTxUs7YyP2RUescTiTrrHnixuw';
 
-      res.writeHead(200);
-      res.write(file, "binary");
-      res.end();
-    });
-});
+// app.all(filename, function(req, res) {
+// 	fs.readFile('.well-known/acme-challenge/Cv_ngx0jR2mYmjm09rTxUs7YyP2RUescTiTrrHnixuw', "binary", function(err, file) {
+//       if(err) {
+//         res.writeHead(500, {"Content-Type": "text/plain"});
+//         res.write(err + "\n");
+//         res.end();
+//         return;
+//       }
+
+//       res.writeHead(200);
+//       res.write(file, "binary");
+//       res.end();
+//     });
+// });
 
 var options = {
 	cert: fs.readFileSync('server/ssl/chained.pem'),

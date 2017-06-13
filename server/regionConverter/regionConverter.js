@@ -10,7 +10,7 @@ var getRegionMap = function(callback) {
     request(
     	{
     		url: url,
-    		qs:qs
+    		qs: qs
     	},
     	function (error, response, body) {
 			callback(JSON.parse(body));
