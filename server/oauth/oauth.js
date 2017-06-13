@@ -34,7 +34,7 @@ var maintainOauthConnection = function() {
 
 	setInterval(function() {
 		refreshAccessToken();
-	}, 60000);
+	}, 600000);
 };
 
 var refreshAccessToken = function() {

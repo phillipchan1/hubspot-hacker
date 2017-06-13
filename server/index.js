@@ -32,32 +32,45 @@ app.all('/*', function ( req, res ) {
         .sendFile(process.cwd() + '/client/index.html');
 });
 
-// refresh oauth token ever 3 hours
+// refresh oauth tokens
 require('./oauth/oauth').maintainOauthConnection();
 
-// var filename = '/.well-known/acme-challenge/Cv_ngx0jR2mYmjm09rTxUs7YyP2RUescTiTrrHnixuw';
 
-// app.all(filename, function(req, res) {
-// 	fs.readFile('.well-known/acme-challenge/Cv_ngx0jR2mYmjm09rTxUs7YyP2RUescTiTrrHnixuw', "binary", function(err, file) {
-//       if(err) {
-//         res.writeHead(500, {"Content-Type": "text/plain"});
-//         res.write(err + "\n");
-//         res.end();
-//         return;
-//       }
+// var hubspot = require('./hubspot/hubspot');
 
-//       res.writeHead(200);
-//       res.write(file, "binary");
-//       res.end();
-//     });
-// });
+// setTimeout(function() {
+// 	hubspot.getContactCountry(17990058, function(country) {
+// 		console.log(country);
 
-var options = {
-	cert: fs.readFileSync('server/ssl/chained.pem'),
-	key: fs.readFileSync('server/ssl/domain.key')
-};
+// 		require('./regionConverter/regionConverter').getRegion(country, function(region) {
+// 			console.log(region);
+// 			hubspot.updateContact(
+// 				17990058,
+// 				{
+// 					"properties": [
+// 						{
+// 							"property": "newregion",
+// 							"value": region
+// 						}
+// 					]
+// 				},
+// 				function(contact) {
+// 					console.log(contact);
+// 				}
+// 			);
+// 		});
 
-var httpsServer = https.createServer(options, app);
+// 	});
+// }, 3000);
+
+
+var httpsServer = https.createServer(
+	{
+		cert: fs.readFileSync('server/ssl/chained.pem'),
+		key: fs.readFileSync('server/ssl/domain.key')
+	},
+	app
+);
 
 httpsServer.listen(8443, function() {
 	console.log('https server running at 8443');

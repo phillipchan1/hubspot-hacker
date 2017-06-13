@@ -1,18 +1,17 @@
 var request = require('request');
+var config = require('../../config/config');
 
 // get region
 var getRegionMap = function(callback) {
-	var url = 'https://spreadsheets.google.com/feeds/list/1S_-x4lb9u1r4oPfoYnQNatKVc7uFIhp-PHmYyIca6x0/od6/public/basic';
-	var qs = {
-		alt: 'json'
-	};
-
-    request(
+    request.get(
     	{
-    		url: url,
-    		qs: qs
+    		url: config.regionMapUrl + '?alt=json',
+			timeout: 60000
     	},
-    	function (error, response, body) {
+    	function (err, response, body) {
+    		if (err) {
+    			console.log(err);
+    		}
 			callback(JSON.parse(body));
 		}
 	);
@@ -49,6 +48,5 @@ var getRegion = function(country, callback) {
 };
 
 module.exports = {
-	getRegion: getRegion,
-	getRegionMap: getRegionMap
+	getRegion: getRegion
 };
