@@ -7,11 +7,13 @@ var hubspot = require('../hubspot/hubspot');
 var regionConverter = require('../regionConverter/regionConverter');
 
 router.post('/new-contact', function(req, res, callback) {
-	console.log('New Contact');
+	console.log('New Contact Created');
 
 	var userId = req.body.objectId;
-
-	hubspot.getContactCountry(userId, function(country) {
+	console.log(`userId: ${userId}`)
+	;
+	if (userId) {
+		hubspot.getContactCountry(userId, function(country) {
 
 		require('./regionConverter/regionConverter').getRegion(country, function(region) {
 
@@ -32,6 +34,9 @@ router.post('/new-contact', function(req, res, callback) {
 			);
 		});
 	});
+	}
+
+
 
 	// hubspot.getContact(req.body.objectId, function(contact) {
 	// 	console.log(contact);
