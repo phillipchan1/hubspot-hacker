@@ -8,10 +8,10 @@ var regionConverter = require('../regionConverter/regionConverter');
 
 router.post('/new-contact', function(req, res, callback) {
 	console.log('New Contact Created');
-
+	console.log(req.body);
 	var userId = req.body.objectId;
-	console.log(`userId: ${userId}`)
-	;
+	console.log(`userId: ${userId}`);
+
 	if (userId) {
 		hubspot.getContactCountry(userId, function(country) {
 
