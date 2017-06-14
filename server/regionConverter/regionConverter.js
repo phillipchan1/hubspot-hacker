@@ -69,10 +69,13 @@ var getRegion = function(country, callback) {
 			}
 		}
 
-		callback(region);
+		if (callback) {
+			callback(region);
+		}
 	});
 };
 
 module.exports = {
-	addRegionToContact: addRegionToContact
+	addRegionToContact: addRegionToContact,
+	getRegion: getRegion
 };
