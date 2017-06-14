@@ -13,30 +13,30 @@ router.post('/new-contact', function(req, res, callback) {
 	console.log(`userId: ${userId}`);
 
 	if (userId) {
-		hubspot.getContactCountry(userId, function(country) {
+		hubspot.getContact(userId, function(contact) {
+			var country = contact.properties.country.value;
 
-		require('./regionConverter/regionConverter').getRegion(country, function(region) {
-
-			hubspot.updateContact(
-				userId,
-				{
-					"properties": [
+			if (country) {
+				regionConverter.getRegion(country, function(region) {
+					hubspot.updateContact(
+						userId,
 						{
-							"property": "newregion",
-							"value": region
+							"properties": [
+								{
+									"property": "newregion",
+									"value": region
+								}
+							]
+						},
+						function(contact) {
+							console.log(`User ${userId} Updated`);
+
 						}
-					]
-				},
-				function(contact) {
-					console.log(`User ${userId} Updated`);
-
-				}
-			);
+					);
+				});
+			}
 		});
-	});
 	}
-
-
 
 	// hubspot.getContact(req.body.objectId, function(contact) {
 	// 	console.log(contact);

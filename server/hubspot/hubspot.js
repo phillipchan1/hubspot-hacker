@@ -17,12 +17,6 @@ var getContact = function(id, callback) {
 	);
 };
 
-var getContactCountry = function(id, callback) {
-	getContact(id, function(contact) {
-		callback(contact.properties.country.value);
-	});
-};
-
 var updateContact = function(id, data, callback) {
 	request.post(
 		{
@@ -47,6 +41,5 @@ var updateContact = function(id, data, callback) {
 
 module.exports = {
 	getContact: getContact,
-	getContactCountry: getContactCountry,
 	updateContact: updateContact
 };
