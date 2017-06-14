@@ -3,49 +3,25 @@
 var express = require('express');
 var router = express.Router();
 
-var hubspot = require('../hubspot/hubspot');
-var regionConverter = require('../regionConverter/regionConverter');
+var contacts = require('./contacts');
 
-router.post('/new-contact', function(req, res, callback) {
-	console.log('New Contact Created');
-	console.log(req.body[0]);
-	var userId = req.body[0].objectId;
-	console.log(`userId: ${userId}`);
+router.post('/', function(req, res, callback) {
+	var objectId = req.body[0].objectId;
+	var payload = req.body;
 
-	if (userId) {
-		hubspot.getContact(userId, function(contact) {
-			var country = contact.properties.country.value;
+	if (objectId) {
 
-			if (country) {
-				regionConverter.getRegion(country, function(region) {
-					hubspot.updateContact(
-						userId,
-						{
-							"properties": [
-								{
-									"property": "newregion",
-									"value": region
-								}
-							]
-						},
-						function(contact) {
-							console.log(`User ${userId} Updated`);
+		// if a new contact is created
+		if (payload.subscriptionType === 'contact.creation') {
+			console.log('New Contact Created');
+			contacts.addRegionToContact(objectId);
+		}
 
-						}
-					);
-				});
-			}
-		});
+		else if (payload.subscriptionType === 'contact.propertyChange') {
+			console.log('New Contact Created');
+			contacts.addRegionToContact(objectId);
+		}
 	}
-
-	// hubspot.getContact(req.body.objectId, function(contact) {
-	// 	console.log(contact);
-	// });
-
-	// give it a country, get the region
-	regionConverter.getRegion('United States', function(region) {
-		res.json(region);
-	});
 });
 
 module.exports = router;
