@@ -69,11 +69,7 @@ var getRegion = function(country, callback) {
 			}
 		}
 
-		if (region) {
-			callback(region);
-		} else {
-			callback('');
-		}
+		callback(region);
 	});
 };
 
