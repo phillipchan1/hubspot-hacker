@@ -72,7 +72,7 @@ var getRegion = function(country, callback) {
 		if (region) {
 			callback(region);
 		} else {
-			console.error('No Region Found for Country');
+			callback('');
 		}
 	});
 };
