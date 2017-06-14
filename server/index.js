@@ -6,7 +6,7 @@ var parser = require('body-parser');
 var fs = require('fs');
 var https = require('https');
 
-// create instance of the server to variable app
+// create instance of the server
 var app = express();
 
 // get method for parsing body
@@ -22,7 +22,6 @@ app.use('/web-hooks/', webhookRoutes);
 
 var apiRoutes = require('./api/api.routes.js');
 app.use('/api/', apiRoutes);
-
 
 // direct all other routes to client-side app
 app.all('/*', function ( req, res ) {
@@ -43,11 +42,11 @@ var httpsServer = https.createServer(
 	app
 );
 
+// start server
 httpsServer.listen(8443, function() {
 	console.log('https server running at 8443');
 });
 
-// // have our app listen on port
 app.listen(process.env.PORT || 80, function() {
 	console.log('Service on running on 80');
 });
