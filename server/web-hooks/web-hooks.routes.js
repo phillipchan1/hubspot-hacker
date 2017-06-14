@@ -7,7 +7,7 @@ var contacts = require('./contacts');
 
 router.post('/', function(req, res, callback) {
 	// var objectId = req.body[0].objectId;
-	var payload = req.body;
+	var payload = req.body[0];
 
 	console.log(payload);
 
