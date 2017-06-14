@@ -6,10 +6,12 @@ var router = express.Router();
 var contacts = require('./contacts');
 
 router.post('/', function(req, res, callback) {
-	var objectId = req.body[0].objectId;
+	// var objectId = req.body[0].objectId;
 	var payload = req.body;
 
-	if (objectId) {
+	console.log(payload);
+
+	if (payload) {
 
 		// if a new contact is created
 		if (payload.subscriptionType === 'contact.creation') {
