@@ -20,7 +20,7 @@ router.post('/', function(req, res, callback) {
 		}
 
 		else if (payload.subscriptionType === 'contact.propertyChange') {
-			console.log('New Contact Created');
+			console.log('Contact Property Change');
 			contacts.addRegionToContact(payload.objectId);
 		}
 	}
