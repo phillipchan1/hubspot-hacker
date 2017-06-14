@@ -1,7 +1,38 @@
 var request = require('request');
 var config = require('../../config/config');
+var hubspot = require('../hubspot/hubspot');
 
-// get region
+// take a contact, give it a region based on contact's country
+var addRegionToContact = function(userId) {
+	// get hubspot user
+	hubspot.getContact(userId, function(contact) {
+		var country = contact.properties.country.value;
+
+		if (country) {
+			// get region based on country
+			getRegion(country, function(region) {
+
+				// then update contact with region
+				hubspot.updateContact(
+					userId,
+					{
+						"properties": [
+							{
+								"property": "newregion",
+								"value": region
+							}
+						]
+					},
+					function(contact) {
+						console.log(`User ${userId} Updated`);
+					}
+				);
+			});
+		}
+	});
+};
+
+// get country/region dictionary
 var getRegionMap = function(callback) {
     request.get(
     	{
@@ -43,10 +74,9 @@ var getRegion = function(country, callback) {
 		} else {
 			console.error('No Region Found for Country');
 		}
-
 	});
 };
 
 module.exports = {
-	getRegion: getRegion
+	addRegionToContact: addRegionToContact
 };

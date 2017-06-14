@@ -2,6 +2,7 @@ var request = require('request');
 var fs = require('fs');
 var config = require('../../config/config');
 
+// get initial API access token
 var getAccessToken = function(accessCode, callback) {
 	request.post(
 		'https://api.hubapi.com/oauth/v1/token',
@@ -29,6 +30,7 @@ var getAccessToken = function(accessCode, callback) {
 	);
 };
 
+// maintain oauth connection throughout duration of application
 var maintainOauthConnection = function() {
 	refreshAccessToken();
 
@@ -37,6 +39,7 @@ var maintainOauthConnection = function() {
 	}, 600000);
 };
 
+// get a new access token using refresh token
 var refreshAccessToken = function() {
 	var tokens = require('./tokens.json');
 
@@ -55,7 +58,6 @@ var refreshAccessToken = function() {
 		},
 		function(err, response, body) {
 			var responseObj = JSON.parse(body);
-			console.log(responseObj);
 
 			if (err) {
 				callback('error');
@@ -68,6 +70,7 @@ var refreshAccessToken = function() {
 	);
 };
 
+// save token information to file
 var saveAccessTokens = function(tokenObject, callback) {
 	fs.writeFile('server/oauth/tokens.json', JSON.stringify(tokenObject), 'utf8', function(err, data) {
 		if (err) {

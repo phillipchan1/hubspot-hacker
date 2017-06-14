@@ -2,26 +2,26 @@
 
 var express = require('express');
 var router = express.Router();
-
-var contacts = require('./contacts');
+var regionConverter = require('../regionConverter/regionConverter');
 
 router.post('/', function(req, res, callback) {
-	// var objectId = req.body[0].objectId;
 	var payload = req.body[0];
+	var hubspotEvent = payload.subscriptionType;
 
 	console.log(payload);
 
 	if (payload) {
 
 		// if a new contact is created
-		if (payload.subscriptionType === 'contact.creation') {
+		if (hubspotEvent === 'contact.creation') {
 			console.log('New Contact Created');
-			contacts.addRegionToContact(payload.objectId);
+			regionConverter.addRegionToContact(payload.objectId);
 		}
 
-		else if (payload.subscriptionType === 'contact.propertyChange') {
+		// if a contact changes a specific property
+		else if (hubspotEvent === 'contact.propertyChange') {
 			console.log('Contact Property Change');
-			contacts.addRegionToContact(payload.objectId);
+			regionConverter.addRegionToContact(payload.objectId);
 		}
 	}
 });

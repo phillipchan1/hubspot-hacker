@@ -35,35 +35,6 @@ app.all('/*', function ( req, res ) {
 // refresh oauth tokens
 require('./oauth/oauth').maintainOauthConnection();
 
-
-// var hubspot = require('./hubspot/hubspot');
-
-// setTimeout(function() {
-// 	hubspot.getContactCountry(17990058, function(country) {
-// 		console.log(country);
-
-// 		require('./regionConverter/regionConverter').getRegion(country, function(region) {
-// 			console.log(region);
-// 			hubspot.updateContact(
-// 				17990058,
-// 				{
-// 					"properties": [
-// 						{
-// 							"property": "newregion",
-// 							"value": region
-// 						}
-// 					]
-// 				},
-// 				function(contact) {
-// 					console.log(contact);
-// 				}
-// 			);
-// 		});
-
-// 	});
-// }, 3000);
-
-
 var httpsServer = https.createServer(
 	{
 		cert: fs.readFileSync('server/ssl/chained.pem'),

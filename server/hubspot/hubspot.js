@@ -1,6 +1,7 @@
 var request = require('request');
 var tokens = require('../oauth/tokens.json');
 
+// get a single hubspot contact
 var getContact = function(id, callback) {
 	request.get(
 		{
@@ -17,6 +18,7 @@ var getContact = function(id, callback) {
 	);
 };
 
+// update a single hubspot contact
 var updateContact = function(id, data, callback) {
 	request.post(
 		{
