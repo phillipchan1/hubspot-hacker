@@ -31,3 +31,15 @@ To run unit tests and listen for changes
 ```
 gulp spec
 ```
+
+## Application Organization
+
+This is a full-stack application. Server code is in `/server` and client code is in `/client`
+
+**Server**
+
+Entry point to application is `server/index.js`. The rest of the folders are modules along with their tests.
+
+Public facing API's are in `server/api` and `server/web-hooks`
+
+
