@@ -16,12 +16,12 @@ router.post('/', function(req, res, callback) {
 		// if a new contact is created
 		if (payload.subscriptionType === 'contact.creation') {
 			console.log('New Contact Created');
-			contacts.addRegionToContact(objectId);
+			contacts.addRegionToContact(payload.objectId);
 		}
 
 		else if (payload.subscriptionType === 'contact.propertyChange') {
 			console.log('New Contact Created');
-			contacts.addRegionToContact(objectId);
+			contacts.addRegionToContact(payload.objectId);
 		}
 	}
 });
