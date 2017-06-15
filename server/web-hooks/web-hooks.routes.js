@@ -17,13 +17,13 @@ router.post('/', function(req, res, callback) {
 
 				if (event === 'contact.creation') {
 					console.log('New Contact Created');
-					regionConverter.addRegionToContact(payload[p].objectId);
+					regionConverter.addRegionToContact(payload[occurences].objectId);
 				}
 
 				// if a contact changes a specific property
 				else if (event === 'contact.propertyChange') {
 					console.log('Contact Property Change');
-					regionConverter.addRegionToContact(payload[p].objectId);
+					regionConverter.addRegionToContact(payload[occurences].objectId);
 				}
 
 				occurences++;
