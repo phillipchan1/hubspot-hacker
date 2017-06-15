@@ -10,7 +10,7 @@ var addRegionToContact = function(userId) {
 
 		// sometimes contacts dont have country or properties
 		if (contact.properties) {
-			 country = contact.properties.country.value;
+			country = contact.properties.country.value;
 		}
 
 		// get region based on country
@@ -21,33 +21,33 @@ var addRegionToContact = function(userId) {
 				userId,
 				{
 					"properties": [
-						{
-							"property": "newregion",
-							"value": region
-						}
+					{
+						"property": "newregion",
+						"value": region
+					}
 					]
 				},
 				function(contact) {
 					console.log(`User ${userId} Updated`);
 				}
-			);
+				);
 		});
 	});
 };
 
 // get country/region dictionary
 var getRegionMap = function(callback) {
-    request.get(
-    	{
-    		url: config.regionMapUrl + '?alt=json',
-			timeout: 60000
-    	},
-    	function (err, response, body) {
-    		if (err) {
-    			console.log(err);
-    		}
-			callback(JSON.parse(body));
+	request.get(
+	{
+		url: config.regionMapUrl + '?alt=json',
+		timeout: 60000
+	},
+	function(err, response, body) {
+		if (err) {
+			console.log(err);
 		}
+		callback(JSON.parse(body));
+	}
 	);
 };
 

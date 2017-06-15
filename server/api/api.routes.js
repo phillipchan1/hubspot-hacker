@@ -1,15 +1,17 @@
-'use strict';
-
 var express = require('express');
+var oauth = require('../oauth/oauth');
 var router = express.Router();
 
-var oauth = require('../oauth/oauth');
+router.post(
+	'/login',
+	function(req, res, callback) {
+		oauth.getAccessToken(
+			req.body.code,
+			function(response) {
 
-router.post('/login', function(req, res, callback) {
-	console.log(req.body.code);
-	oauth.getAccessToken(req.body.code, function(response) {
-		console.log(response);
-	});
-});
+			}
+		);
+	}
+);
 
 module.exports = router;

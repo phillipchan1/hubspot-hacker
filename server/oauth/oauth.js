@@ -1,6 +1,6 @@
-var request = require('request');
-var fs = require('fs');
 var config = require('../../config/config');
+var fs = require('fs');
+var request = require('request');
 
 // get initial API access token
 var getAccessToken = function(accessCode, callback) {
@@ -8,39 +8,44 @@ var getAccessToken = function(accessCode, callback) {
 		'https://api.hubapi.com/oauth/v1/token',
 		{
 			form: {
-				grant_type: 'authorization_code',
 				client_id: config.client_id,
 				client_secret: config.client_secret,
-				redirect_uri: config.redirect_uri,
-				code: accessCode
+				code: accessCode,
+				grant_type: 'authorization_code',
+				redirect_uri: config.redirect_uri
 			}
 		},
 		function(err, response, body) {
 			var responseObj = JSON.parse(body);
+
 			console.log(responseObj);
 
 			if (err) {
 				callback('error');
-			} else {
+			}
+			else {
 				if (responseObj.refresh_token) {
 					saveAccessTokens(responseObj);
 				}
 			}
 		}
-	);
+		);
 };
 
 // maintain oauth connection throughout duration of application
 var maintainOauthConnection = function() {
 	refreshAccessToken();
 
-	setInterval(function() {
-		refreshAccessToken();
-	}, 600000);
+	setInterval(
+		function() {
+			refreshAccessToken();
+		},
+		600000
+	);
 };
 
 // get a new access token using refresh token
-var refreshAccessToken = function() {
+var refreshAccessToken = function(callback) {
 	var tokens = require('./tokens.json');
 
 	console.log('Refreshing tokens');
@@ -49,11 +54,11 @@ var refreshAccessToken = function() {
 		'https://api.hubapi.com/oauth/v1/token',
 		{
 			form: {
-				grant_type: 'refresh_token',
 				client_id: config.client_id,
 				client_secret: config.client_secret,
+				grant_type: 'refresh_token',
 				redirect_uri: config.redirect_uri,
-				refresh_token: tokens.refresh_token,
+				refresh_token: tokens.refresh_token
 			}
 		},
 		function(err, response, body) {
@@ -61,23 +66,29 @@ var refreshAccessToken = function() {
 
 			if (err) {
 				callback('error');
-			} else {
+			}
+			else {
 				if (responseObj.refresh_token) {
 					saveAccessTokens(responseObj);
 				}
 			}
 		}
-	);
+		);
 };
 
 // save token information to file
 var saveAccessTokens = function(tokenObject, callback) {
-	fs.writeFile('server/oauth/tokens.json', JSON.stringify(tokenObject), 'utf8', function(err, data) {
-		if (err) {
-			console.log(err);
-			throw err;
+	fs.writeFile(
+		'server/oauth/tokens.json',
+		JSON.stringify(tokenObject),
+		'utf8',
+		function(err, data) {
+			if (err) {
+				console.log(err);
+				throw err;
+			}
 		}
-	});
+	);
 };
 
 module.exports = {

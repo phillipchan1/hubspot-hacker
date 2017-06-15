@@ -2,9 +2,9 @@
 
 'use strict';
 var express = require('express');
-var parser = require('body-parser');
 var fs = require('fs');
 var https = require('https');
+var parser = require('body-parser');
 
 // create instance of the server
 var app = express();
@@ -18,18 +18,27 @@ app.use('/', express.static('client/'));
 
 // routes
 var webhookRoutes = require('./web-hooks/web-hooks.routes');
+
 app.use('/web-hooks/', webhookRoutes);
 
 var apiRoutes = require('./api/api.routes.js');
+
 app.use('/api/', apiRoutes);
 
 // direct all other routes to client-side app
-app.all('/*', function ( req, res ) {
-    res
-        .status( 200 )
-        .set( { 'content-type': 'text/html; charset=utf-8' } )
-        .sendFile(process.cwd() + '/client/index.html');
-});
+app.all(
+	'/*',
+	function(req, res) {
+		res
+			.status(200)
+			.set(
+				{
+					'content-type': 'text/html; charset=utf-8'
+				}
+			)
+			.sendFile(process.cwd() + '/client/index.html');
+	}
+	);
 
 // refresh oauth tokens
 require('./oauth/oauth').maintainOauthConnection();
@@ -43,10 +52,16 @@ var httpsServer = https.createServer(
 );
 
 // start server
-httpsServer.listen(8443, function() {
-	console.log('https server running at 8443');
-});
+httpsServer.listen(
+	8443,
+	function() {
+		console.log('https server running at 8443');
+	}
+);
 
-app.listen(process.env.PORT || 80, function() {
-	console.log('Service on running on 80');
-});
+app.listen(
+	process.env.PORT || 80,
+	function() {
+		console.log('Service on running on 80');
+	}
+);
