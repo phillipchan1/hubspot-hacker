@@ -7,8 +7,9 @@ router.post('/', function(req, res, callback) {
 	var numOfPayloads = payload.length;
 	var occurences = 0;
 
-	// throttle number of api calls with custom loop
 	if (payload) {
+
+		// throttle number of api calls with custom loop
 		var interval = setInterval(function() {
 			if (occurences < numOfPayloads) {
 				console.log(payload[occurences]);
@@ -31,7 +32,7 @@ router.post('/', function(req, res, callback) {
 			else {
 				clearInterval(interval);
 			}
-		}, 2000);
+		}, 2500);
 	}
 });
 
