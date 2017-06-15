@@ -30,7 +30,7 @@ var addRegionToContact = function(userId) {
 				function(contact) {
 					console.log(`User ${userId} Updated`);
 				}
-				);
+			);
 		});
 	});
 };
