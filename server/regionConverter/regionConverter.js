@@ -6,29 +6,32 @@ var hubspot = require('../hubspot/hubspot');
 var addRegionToContact = function(userId) {
 	// get hubspot user
 	hubspot.getContact(userId, function(contact) {
-		var country = contact.properties.country.value;
+		var country = '';
 
-		if (country !== undefined) {
-			// get region based on country
-			getRegion(country, function(region) {
-
-				// then update contact with region
-				hubspot.updateContact(
-					userId,
-					{
-						"properties": [
-							{
-								"property": "newregion",
-								"value": region
-							}
-						]
-					},
-					function(contact) {
-						console.log(`User ${userId} Updated`);
-					}
-				);
-			});
+		// sometimes contacts dont have country or properties
+		if (contact.properties) {
+			 country = contact.properties.country.value;
 		}
+
+		// get region based on country
+		getRegion(country, function(region) {
+
+			// then update contact with region
+			hubspot.updateContact(
+				userId,
+				{
+					"properties": [
+						{
+							"property": "newregion",
+							"value": region
+						}
+					]
+				},
+				function(contact) {
+					console.log(`User ${userId} Updated`);
+				}
+			);
+		});
 	});
 };
 
