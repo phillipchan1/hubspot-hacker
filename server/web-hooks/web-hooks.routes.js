@@ -32,7 +32,7 @@ router.post('/', function(req, res, callback) {
 			else {
 				clearInterval(interval);
 			}
-		}, 2500);
+		}, 3000);
 	}
 });
 

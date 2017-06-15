@@ -9,7 +9,7 @@ var addRegionToContact = function(userId) {
 		var country = '';
 
 		// sometimes contacts dont have country or properties
-		if (contact.properties) {
+		if (contact.properties.country.value) {
 			country = contact.properties.country.value;
 		}
 
