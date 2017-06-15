@@ -31,7 +31,7 @@ router.post('/', function(req, res, callback) {
 			else {
 				clearInterval(interval);
 			}
-		}, 1000);
+		}, 2000);
 	}
 });
 
