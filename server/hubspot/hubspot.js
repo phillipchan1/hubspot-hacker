@@ -32,7 +32,7 @@ var getContact = function(id, callback) {
 };
 
 // update a single hubspot contact
-var updateContact = function(id, data, callback) {
+var updateContact = function(id, userData, callback) {
 	var success = false;
 	var data = '';
 
@@ -42,7 +42,7 @@ var updateContact = function(id, data, callback) {
 			headers: {
 				'Authorization': `Bearer ${tokens.access_token}`
 			},
-			form: JSON.stringify(data)
+			form: JSON.stringify(userData)
 		},
 		function(err, response) {
 			if (err) {

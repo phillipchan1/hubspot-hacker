@@ -17,6 +17,7 @@ var addRegionToContact = function(userId, callback) {
 		}
 
 		catch(e) {
+			data = e;
 			console.log(e);
 		}
 
