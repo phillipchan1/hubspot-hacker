@@ -4,7 +4,7 @@
 ## Table of Contents
 1. [Getting Started](#getting-started)
 2. [Deploying](#deploying)
-3. =Reinitiating Oauth Connection](#reinitiating)
+3. [Reinitiating Oauth Connection](#reinitiating)
 
 ## Getting Started
 
