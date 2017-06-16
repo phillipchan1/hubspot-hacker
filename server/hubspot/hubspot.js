@@ -3,6 +3,9 @@ var tokens = require('../oauth/tokens.json');
 
 // get a single hubspot contact
 var getContact = function(id, callback) {
+	var success = false;
+	var data = '';
+
 	request.get(
 		{
 			url: `https://api.hubapi.com/contacts/v1/contact/vid/${id}/profile`,
@@ -11,7 +14,19 @@ var getContact = function(id, callback) {
 			}
 		},
 		function(err, response) {
+			if (err) {
+				data = err;
+			} else {
+				success = true;
+				data = JSON.parse(response.body)
+			}
+
 			if (callback) {
+				callback({
+					success: success,
+					data: data
+				});
+
 				callback(JSON.parse(response.body));
 			}
 		}
@@ -20,6 +35,9 @@ var getContact = function(id, callback) {
 
 // update a single hubspot contact
 var updateContact = function(id, data, callback) {
+	var success = false;
+	var data = '';
+
 	request.post(
 		{
 			url: `https://api.hubapi.com/contacts/v1/contact/vid/${id}/profile`,
@@ -31,11 +49,18 @@ var updateContact = function(id, data, callback) {
 		function(err, response) {
 			if (err) {
 				console.log(err);
+				data = err;
+			} else {
+				success = true;
+				data = response.body;
+				console.log(response.body);
 			}
 
-			console.log(response.body);
 			if (callback) {
-				callback(response.body);
+				callback({
+					success: success,
+					data: data
+				});
 			}
 		}
 	);
