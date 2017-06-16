@@ -4,6 +4,7 @@
 ## Table of Contents
 1. [Getting Started](#getting-started)
 2. [Deploying](#deploying)
+3. =Reinitiating Oauth Connection](#reinitiating)
 
 ## Getting Started
 
@@ -42,4 +43,18 @@ Entry point to application is `server/index.js`. The rest of the folders are mod
 
 Public facing API's are in `server/api` and `server/web-hooks`
 
+## Reinitiating OAuth Connection
 
+The app requires a persistent oauth connection to Hubspot. Hubspot's workflow is like this: 
+
+1. Login with Hubspot's oauth authorizer, providing it with an HTTPS callback URL.
+2. The HTTPS URL that recieves it will have a code in the query parameter
+3. That code will need to be sent to Hubspot's Oauth API to request tokens.
+4. Included in those tokens recieved is the "access token", which will be able to make all the API calls. However, they expire every 6 hours. Also included in the tokens given is a "refresh token". If you provide Hubspot with that "refresh token", it will provide you with new sets of tokens.
+5. Therefore, to get persistent Oauth connection to Hubspot, the app must regularly ask for new tokens so that that app's keys remain active.
+
+This application has the mechanisms to do that and stores the current most active tokens in `/server/oauth/tokens.json`. It has a scheduler to update the token as well.
+
+However in development, the `tokens.json` may be out of date as the tokens on the server differ than the ones on local (as in, if our local tokens are expired, and we push that code to the server, the server's code will be expired).
+
+*To circumvent this issue, whenever deploying, reinitiate a fresh oauth connection by clicking "Reinitiate Oauth Connection" on the app's home page.*
