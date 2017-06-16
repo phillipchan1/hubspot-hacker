@@ -35,6 +35,10 @@ router.post('/', function(req, res, callback) {
 						}
 					});
 				}
+
+				else {
+					console.log('Web hook hit but no action specified');
+				}
 			}
 
 			else {
