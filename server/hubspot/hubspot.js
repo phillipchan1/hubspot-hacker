@@ -18,7 +18,7 @@ var getContact = function(id, callback) {
 				data = err;
 			} else {
 				success = true;
-				data = JSON.parse(response.body)
+				data = JSON.parse(response.body);
 			}
 
 			if (callback) {
@@ -26,8 +26,6 @@ var getContact = function(id, callback) {
 					success: success,
 					data: data
 				});
-
-				callback(JSON.parse(response.body));
 			}
 		}
 	);
