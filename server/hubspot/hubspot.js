@@ -4,7 +4,7 @@ var tokens = require('../oauth/tokens.json');
 // get a single hubspot contact
 var getContact = function(id, callback) {
 	var success = false;
-	var data = '';
+	var responseData = '';
 
 	request.get(
 		{
@@ -15,16 +15,16 @@ var getContact = function(id, callback) {
 		},
 		function(err, response) {
 			if (err) {
-				data = err;
+				responseData = err;
 			} else {
 				success = true;
-				data = JSON.parse(response.body);
+				responseData = JSON.parse(response.body);
 			}
 
 			if (callback) {
 				callback({
 					success: success,
-					data: data
+					responseData: responseData
 				});
 			}
 		}
@@ -34,7 +34,7 @@ var getContact = function(id, callback) {
 // update a single hubspot contact
 var updateContact = function(id, userData, callback) {
 	var success = false;
-	var data = '';
+	var responseData = '';
 
 	request.post(
 		{
@@ -47,17 +47,17 @@ var updateContact = function(id, userData, callback) {
 		function(err, response) {
 			if (err) {
 				console.log(err);
-				data = err;
+				responseData = err;
 			} else {
 				success = true;
-				data = response.body;
+				responseData = response.body;
 				console.log(response.body);
 			}
 
 			if (callback) {
 				callback({
 					success: success,
-					data: data
+					responseData: responseData
 				});
 			}
 		}

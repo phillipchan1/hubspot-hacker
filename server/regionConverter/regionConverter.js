@@ -5,19 +5,19 @@ var hubspot = require('../hubspot/hubspot');
 // take a contact, give it a region based on contact's country
 var addRegionToContact = function(userId, callback) {
 	var success = false;
-	var data = '';
+	var responseData = '';
 
 	// get hubspot user
 	hubspot.getContact(userId, function(response) {
 		var country = '';
-		var contact = response.data;
+		var contact = response.responseData;
 
 		try {
 			country = contact.properties.country.value;
 		}
 
 		catch(e) {
-			data = e;
+			responseData = e;
 			console.log(e);
 		}
 
@@ -41,12 +41,12 @@ var addRegionToContact = function(userId, callback) {
 						success = true;
 					}
 
-					data = response.data;
+					responseData = response.responseData;
 
 					if (callback) {
 						callback({
 							success: success,
-							data: data
+							responseData: responseData
 						});
 					}
 				}
