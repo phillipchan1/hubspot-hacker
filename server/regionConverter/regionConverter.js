@@ -8,9 +8,12 @@ var addRegionToContact = function(userId) {
 	hubspot.getContact(userId, function(contact) {
 		var country = '';
 
-		// sometimes contacts dont have country or properties
-		if (contact.properties.country.value) {
+		try {
 			country = contact.properties.country.value;
+		}
+
+		catch(e) {
+			console.log(e);
 		}
 
 		// get region based on country
