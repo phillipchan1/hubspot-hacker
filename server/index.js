@@ -43,16 +43,6 @@ app.all(
 // refresh oauth tokens
 require('./oauth/oauth').maintainOauthConnection();
 
-// require('./hubspot/hubspot').getContact(18018508, function(response) {
-// 	console.log(response.responseData.properties.country.value);
-// })
-
-
-// require('./regionConverter/regionConverter').getRegion('British Indian Ocean Territory', function(region) {
-// 	console.log(region);
-// })
-
-
 var httpsServer = https.createServer(
 	{
 		cert: fs.readFileSync('server/ssl/chained.pem'),

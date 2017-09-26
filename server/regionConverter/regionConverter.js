@@ -58,16 +58,16 @@ var addRegionToContact = function(userId, callback) {
 // get country/region dictionary
 var getRegionMap = function(callback) {
 	request.get(
-	{
-		url: config.regionMapUrl + '?alt=json',
-		timeout: 60000
-	},
-	function(err, response, body) {
-		if (err) {
-			console.log(err);
+		{
+			url: config.regionMapUrl + '?alt=json',
+			timeout: 60000
+		},
+		function(err, response, body) {
+			if (err) {
+				console.log(err);
+			}
+			callback(JSON.parse(body));
 		}
-		callback(JSON.parse(body));
-	}
 	);
 };
 
