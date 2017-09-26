@@ -31,6 +31,32 @@ var getContact = function(id, callback) {
 	);
 };
 
+var getContactsInList = function(id, callback) {
+	request.get(
+		{
+			url: `https://api.hubapi.com/contacts/v1/lists/${id}/contacts/all`,
+			headers: {
+				'Authorization': `Bearer ${tokens.access_token}`
+			}
+		},
+		function(err, response) {
+			if (err) {
+				responseData = err;
+			} else {
+				success = true;
+				responseData = JSON.parse(response.body);
+			}
+
+			if (callback) {
+				callback({
+					success: success,
+					responseData: responseData
+				});
+			}
+		}
+	);
+};
+
 // update a single hubspot contact
 var updateContact = function(id, userData, callback) {
 	var success = false;
@@ -64,7 +90,10 @@ var updateContact = function(id, userData, callback) {
 	);
 };
 
+
+
 module.exports = {
 	getContact: getContact,
+	getContactsInList: getContactsInList,
 	updateContact: updateContact
 };

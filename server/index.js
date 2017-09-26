@@ -25,6 +25,9 @@ var apiRoutes = require('./api/api.routes.js');
 
 app.use('/api/', apiRoutes);
 
+// run polls
+require('./polling/polling');
+
 // direct all other routes to client-side app
 app.all(
 	'/*',
