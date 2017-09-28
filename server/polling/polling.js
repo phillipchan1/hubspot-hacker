@@ -1,7 +1,9 @@
+let config = require('../../config/config');
 let regionConverterPollImpl = require('./regionConverterPollImpl');
-let pollingFrequency = 5000;
+
+regionConverterPollImpl();
 
 // run a poll to clean up contacts without a region
 var regionConverterPoll = setInterval(function() {
 	regionConverterPollImpl();
-}, pollingFrequency);
+}, config.polling_frequency);

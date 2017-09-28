@@ -1,5 +1,6 @@
 var request = require('request');
 var tokens = require('../oauth/tokens.json');
+var urlUtils = require('../utils/urlUtils');
 
 // get a single hubspot contact
 var getContact = function(id, callback) {
@@ -31,10 +32,16 @@ var getContact = function(id, callback) {
 	);
 };
 
-var getContactsInList = function(id, callback) {
+var getContactsInList = function(id, options, callback) {
+	var parameters = '';
+
+	if (options) {
+		parameters = urlUtils.serializeQueryParameters(options);
+	}
+
 	request.get(
 		{
-			url: `https://api.hubapi.com/contacts/v1/lists/${id}/contacts/all`,
+			url: `https://api.hubapi.com/contacts/v1/lists/${id}/contacts/all${parameters}`,
 			headers: {
 				'Authorization': `Bearer ${tokens.access_token}`
 			}
@@ -59,14 +66,15 @@ var getContactsInList = function(id, callback) {
 
 // update a single hubspot contact
 var updateContact = function(id, userData, callback) {
-	var success = false;
 	var responseData = '';
+	var success = false;
 
 	request.post(
 		{
 			url: `https://api.hubapi.com/contacts/v1/contact/vid/${id}/profile`,
 			headers: {
-				'Authorization': `Bearer ${tokens.access_token}`
+				'Authorization': `Bearer ${tokens.access_token}`,
+				'Content-Type': 'application/json'
 			},
 			form: JSON.stringify(userData)
 		},
@@ -74,10 +82,9 @@ var updateContact = function(id, userData, callback) {
 			if (err) {
 				console.log(err);
 				responseData = err;
-			} else {
+			} else if (response.statusCode === 204) {
 				success = true;
 				responseData = response.body;
-				console.log(response.body);
 			}
 
 			if (callback) {
@@ -90,10 +97,48 @@ var updateContact = function(id, userData, callback) {
 	);
 };
 
+// update a group of contacts
+var updateContacts = function(contactsJSON, options, callback) {
+	var parameters = '';
+	var responseData = '';
+	var success = false;
 
+	if (options) {
+		parameters = urlUtils.serializeQueryParameters(options);
+	}
+
+	request.post(
+		{
+			url: `https://api.hubapi.com/contacts/v1/contact/batch/${parameters}`,
+			headers: {
+				'Authorization': `Bearer ${tokens.access_token}`
+			},
+			form: contactsJSON
+		},
+		function(err, response) {
+
+			console.log(response.statusCode);
+			if (err) {
+				console.log(err);
+				responseData = err;
+			} else {
+				success = true;
+				responseData = response.body;
+			}
+
+			if (callback) {
+				callback({
+					success: success,
+					responseData: responseData
+				});
+			}
+		}
+	);
+};
 
 module.exports = {
 	getContact: getContact,
 	getContactsInList: getContactsInList,
-	updateContact: updateContact
+	updateContact: updateContact,
+	updateContacts: updateContacts
 };

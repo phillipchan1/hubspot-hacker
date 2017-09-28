@@ -28,6 +28,13 @@ app.use('/api/', apiRoutes);
 // run polls
 require('./polling/polling');
 
+require('./regionConverter/regionConverter')
+	.getRegionMap(
+		function(map) {
+			global.regionMap = map;
+		}
+	);
+
 // direct all other routes to client-side app
 app.all(
 	'/*',

@@ -1,5 +1,6 @@
 var request = require('request');
 var config = require('../../config/config');
+var contactModel = require('../hubspot/contactModel');
 var hubspot = require('../hubspot/hubspot');
 
 // take a contact, give it a region based on contact's country
@@ -7,13 +8,50 @@ var addRegionToContact = function(userId, callback) {
 	var success = false;
 	var responseData = '';
 
-	// get hubspot user
-	hubspot.getContact(userId, function(response) {
-		var country = '';
-		var contact = response.responseData;
+	getRegionforContact(userId, function(region) {
+		hubspot.updateContact(
+			userId,
+			{
+				"properties": [
+					{
+						"property": "newregion",
+						"value": region
+					}
+				]
+			},
+			function(response) {
+				if (response.success === true) {
+					console.log(`User ${userId} Successfully Updated`);
+					success = true;
+				}
+
+				responseData = response.responseData;
+
+				if (callback) {
+					callback({
+						success: success,
+						responseData: responseData
+					});
+				}
+			}
+		);
+	});
+};
+
+// returns json of contacts with correct regions
+var getRegionForContacts = function(contactsList) {
+	var updatedContactsList = [];
+	console.log(contactsList);
+
+	// iterate through list
+	for (let i = 0; i < contactsList.length; i++) {
+		let contact = contactsList[i];
+		let country = '';
 
 		try {
-			country = contact.properties.country.value;
+			if (contact.properties && contact.properties.country) {
+				country = contact.properties.country.value;
+			}
 		}
 
 		catch(e) {
@@ -21,37 +59,37 @@ var addRegionToContact = function(userId, callback) {
 			console.log(e);
 		}
 
-		// get region based on country
-		getRegion(country, function(region) {
-
-			// then update contact with region
-			hubspot.updateContact(
-				userId,
-				{
-					"properties": [
-						{
-							"property": "newregion",
-							"value": region
-						}
-					]
-				},
-				function(response) {
-					if (response.success === true) {
-						console.log(`User ${userId} Successfully Updated`);
-						success = true;
+		let region = getRegion(country);
+		let updatedContact = contactModel.newContact(
+				contact.vid,
+				[
+					{
+						"property": "newregion",
+						"value": region
 					}
-
-					responseData = response.responseData;
-
-					if (callback) {
-						callback({
-							success: success,
-							responseData: responseData
-						});
-					}
-				}
+				]
 			);
-		});
+
+		updatedContactsList.push(updatedContact);
+	}
+
+	return updatedContactsList;
+};
+
+var getRegionforContact = function(userId, callback) {
+	hubspot.getContact(userId, function(response) {
+		var country = '';
+		var contact = response.responseData;
+
+		if (contact.properties.country) {
+			country = contact.properties.country.value;
+		}
+
+		var region = getRegion(country);
+
+		if (callback) {
+			callback(region);
+		}
 	});
 };
 
@@ -72,33 +110,31 @@ var getRegionMap = function(callback) {
 };
 
 // get region based on country
-var getRegion = function(country, callback) {
-	getRegionMap(function(regionMap) {
-		var regionTable = regionMap.feed.entry;
-		var countryData = {};
-		var searchQuery = 'region: ';
-		var region = '';
+var getRegion = function(country) {
+	var regionTable = global.regionMap.feed.entry;
+	var countryData = {};
+	var searchQuery = 'region: ';
+	var region = '';
 
-		for (let i = 0; i < regionTable.length; i++) {
-			if (regionTable[i]["title"]["$t"] === country) {
-				countryData = regionTable[i];
+	for (let i = 0; i < regionTable.length; i++) {
+		if (regionTable[i]["title"]["$t"] === country) {
+			countryData = regionTable[i];
 
-				let beginningCountryIndex = countryData.content.$t.indexOf(searchQuery);
-				let endCountryIndex = countryData.content.$t.indexOf(',', beginningCountryIndex);
+			let beginningCountryIndex = countryData.content.$t.indexOf(searchQuery);
+			let endCountryIndex = countryData.content.$t.length;
 
-				var region = countryData.content.$t.substring(beginningCountryIndex + searchQuery.length, endCountryIndex);
+			region = countryData.content.$t.substring(beginningCountryIndex + searchQuery.length, endCountryIndex);
 
-				break;
-			}
+			break;
 		}
+	}
 
-		if (callback) {
-			callback(region);
-		}
-	});
+	return region;
 };
 
 module.exports = {
 	addRegionToContact: addRegionToContact,
-	getRegion: getRegion
+	getRegionForContacts: getRegionForContacts,
+	getRegion: getRegion,
+	getRegionMap: getRegionMap
 };
