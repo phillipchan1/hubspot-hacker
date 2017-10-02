@@ -12,6 +12,8 @@ module.exports = function() {
 
 	var i = function() {
 		setTimeout(function() {
+
+			// get all contacts in the list that needs to be cleaned up
 			hubspot.getContactsInList(
 				config.region_contact_list_to_clean_id,
 				{
@@ -29,6 +31,7 @@ module.exports = function() {
 						var p = function() {
 							var contact = currentContactsSet[pCounter];
 
+							// for each contact, add the region to contact based on its country
 							setTimeout(function() {
 								regionConverter.addRegionToContact(contact.vid, function(response) {
 

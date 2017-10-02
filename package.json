@@ -13,12 +13,13 @@
   "scripts": {
     "start": "node server/index.js",
     "test": "node test",
-    "dev": "sudo nodemon --ignore '*.json'"
+    "dev": "sudo nodemon --ignore '*.json' --ignore '*.spec.js'"
   },
   "version": "1.0.0",
   "devDependencies": {
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
+    "gulp-mocha": "^4.3.1",
     "mocha": "^3.2.0"
   }
 }
