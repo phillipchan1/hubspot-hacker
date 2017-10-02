@@ -19,18 +19,8 @@ router.post('/', function(req, res, callback) {
 				let event = payload[occurences].subscriptionType;
 				let currentPayload = payload[occurences];
 
-				if (event === 'contact.creation') {
+				if (event === 'contact.creation' || event === 'contact.propertyChange') {
 					console.log('New Contact Created');
-					regionConverter.addRegionToContact(currentPayload.objectId, function(response) {
-						if (response.success === true) {
-							occurences++;
-						}
-					});
-				}
-
-				// if a contact changes a specific property
-				else if (event === 'contact.propertyChange') {
-					console.log('Contact Property Change');
 					regionConverter.addRegionToContact(currentPayload.objectId, function(response) {
 						if (response.success === true) {
 							occurences++;
