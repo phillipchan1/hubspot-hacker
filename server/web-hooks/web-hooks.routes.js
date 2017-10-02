@@ -8,8 +8,6 @@ router.post('/', function(req, res, callback) {
 	var numOfPayloads = payload.length;
 	var occurences = 0;
 
-	console.log(req.body);
-
 	// if payload is JSON object
 	if (Array.isArray(payload)) {
 		// throttle number of api calls with custom loop
