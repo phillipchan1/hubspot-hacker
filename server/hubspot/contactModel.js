@@ -1,7 +1,7 @@
 module.exports = {
 	newContact(vid, props) {
 		return {
-			"vid": vid,
+			"vid": vid.toString(),
 			"properties": props
 		};
 	}

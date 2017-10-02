@@ -13,55 +13,43 @@ module.exports = function() {
 	var i = function() {
 		setTimeout(function() {
 
-			// get all contacts in the list that needs to be cleaned up
+			// get all the contacts in the list
 			hubspot.getContactsInList(
 				config.region_contact_list_to_clean_id,
 				{
 					property: 'country',
+					count: 50,
 					vidOffset: vidOffset
 				},
 				function(response) {
-					var currentContactsSet = response.responseData.contacts;
-					var responseFromContactList = response;
+					let contacts = response.responseData.contacts;
+					let responseFromContactList = response;
 
-					if (listUtils.isNotEmpty(currentContactsSet)) {
-						var pCounter = 0;
-						var maxIterations = currentContactsSet.length;
+					// get HS-formatted JSON of updated contacts with appropriate region
+					let contactsWithRegions = regionConverter.getRegionForContacts(contacts);
 
-						var p = function() {
-							var contact = currentContactsSet[pCounter];
+					// update batch of them
+					hubspot.updateContacts(
+						contactsWithRegions,
+						null,
+						function(response) {
+							if (response.success === true) {
+								console.log("Batch of Contacts Updated Successfully");
 
-							// for each contact, add the region to contact based on its country
-							setTimeout(function() {
-								regionConverter.addRegionToContact(contact.vid, function(response) {
+								if (responseFromContactList.responseData['has-more']) {
+									vidOffset = responseFromContactList.responseData['vid-offset'];
+									i();
 
-									// finish iteration through the list
-									if (pCounter < maxIterations) {
-										p();
-										pCounter++;
-									}
+								}
 
-									// once done iteration through current Contact set, then go through
-									// the next set until all of the sets are complete
-									else {
-										pCounter = 0;
-										vidOffset = responseFromContactList.responseData['vid-offset'];
+								else {
+									let timeToFinish = moment.duration(new Date().getTime() - startTime);
 
-										if (responseFromContactList.responseData['has-more']) {
-											i();
-										} else {
-											let timeToFinish = moment.duration(new Date().getTime() - startTime);
-
-
-											console.log(`\nCOMPLETED THE LIST IN ${timeToFinish.humanize()}`);
-										}
-									}
-								});
-							}, 250);
-						};
-
-						p();
-					}
+									console.log(`\nCOMPLETED THE LIST IN ${timeToFinish.humanize()}`);
+								}
+							}
+						}
+					);
 				}
 			);
 		}, 1000);

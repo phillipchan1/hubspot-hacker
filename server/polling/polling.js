@@ -7,7 +7,7 @@ regionConverterPoll.dayOfWeek = [0, 6];
 regionConverterPoll.hour = 6;
 regionConverterPoll.minute = 0;
 
-// regionConverterPollImpl();
+regionConverterPollImpl();
 var j = schedule.scheduleJob(regionConverterPoll, function(){
   regionConverterPollImpl();
 });

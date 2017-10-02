@@ -10,6 +10,7 @@ router.post('/', function(req, res, callback) {
 
 	// if payload is JSON object
 	if (Array.isArray(payload)) {
+
 		// throttle number of api calls with custom loop
 		var interval = setInterval(function() {
 			if (occurences < numOfPayloads) {

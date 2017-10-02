@@ -107,29 +107,29 @@ var updateContacts = function(contactsJSON, options, callback) {
 		parameters = urlUtils.serializeQueryParameters(options);
 	}
 
-	request.post(
+	request(
 		{
-			url: `https://api.hubapi.com/contacts/v1/contact/batch/${parameters}`,
+			method: 'POST',
+			json: true,
 			headers: {
-				'Authorization': `Bearer ${tokens.access_token}`
+				'Authorization': `Bearer ${tokens.access_token}`,
+				'Content-Type': 'application/json'
 			},
-			form: contactsJSON
+			uri: `https://api.hubapi.com/contacts/v1/contact/batch/${parameters}`,
+			body: contactsJSON
 		},
-		function(err, response) {
+		function(err, response, body) {
 
-			console.log(response.statusCode);
-			if (err) {
-				console.log(err);
-				responseData = err;
-			} else {
-				success = true;
-				responseData = response.body;
+			if (response.statusCode === 202) {
+				callback({
+					success: true,
+					responseData: response.body
+				});
 			}
 
-			if (callback) {
+			else {
 				callback({
-					success: success,
-					responseData: responseData
+					success: false
 				});
 			}
 		}

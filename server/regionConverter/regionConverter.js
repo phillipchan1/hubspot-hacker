@@ -41,7 +41,6 @@ var addRegionToContact = function(userId, callback) {
 // returns json of contacts with correct regions
 var getRegionForContacts = function(contactsList) {
 	var updatedContactsList = [];
-	console.log(contactsList);
 
 	// iterate through list
 	for (let i = 0; i < contactsList.length; i++) {
