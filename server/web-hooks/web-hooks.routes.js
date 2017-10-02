@@ -20,7 +20,6 @@ router.post('/', function(req, res, callback) {
 				let currentPayload = payload[occurences];
 
 				if (event === 'contact.creation' || event === 'contact.propertyChange') {
-					console.log('New Contact Created');
 					regionConverter.addRegionToContact(currentPayload.objectId, function(response) {
 						if (response.success === true) {
 							occurences++;
