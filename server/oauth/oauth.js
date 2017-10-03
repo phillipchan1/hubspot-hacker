@@ -44,7 +44,7 @@ var maintainOauthConnection = function() {
 			reportAccessTokenStatus();
 			refreshAccessToken();
 		},
-		60000
+		600000
 	);
 };
 
