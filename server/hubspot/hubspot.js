@@ -64,6 +64,17 @@ var getContactsInList = function(id, options, callback) {
 	);
 };
 
+getTokenInformation = function(token, callback) {
+	request.get({
+		url: `https://api.hubapi.com/oauth/v1/access-tokens/${tokens.access_token}`,
+		headers: {
+			'Authorization': `Bearer ${tokens.access_token}`
+		}
+	}, function(err, response) {
+		callback(JSON.parse(response.body));
+	});
+};
+
 // update a single hubspot contact
 var updateContact = function(id, userData, callback) {
 	var responseData = '';
@@ -139,6 +150,7 @@ var updateContacts = function(contactsJSON, options, callback) {
 module.exports = {
 	getContact: getContact,
 	getContactsInList: getContactsInList,
+	getTokenInformation: getTokenInformation,
 	updateContact: updateContact,
 	updateContacts: updateContacts
 };

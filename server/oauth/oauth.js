@@ -1,6 +1,8 @@
 var config = require('../../config/config');
 var fs = require('fs');
+var hubspot = require('../hubspot/hubspot');
 var request = require('request');
+var tokens = require('./tokens.json');
 
 // get initial API access token
 var getAccessToken = function(accessCode, callback) {
@@ -34,13 +36,40 @@ var getAccessToken = function(accessCode, callback) {
 
 // maintain oauth connection throughout duration of application
 var maintainOauthConnection = function() {
+	reportAccessTokenStatus();
 	refreshAccessToken();
 
 	setInterval(
 		function() {
+			reportAccessTokenStatus();
 			refreshAccessToken();
 		},
-		600000
+		60000
+	);
+};
+
+var reportAccessTokenStatus = function() {
+	verifyAccessToken(
+		function(status) {
+			if (status === true) {
+				return;
+			} else {
+				console.log(`Error: Tokens Expired. Reestablish Oauth Connection`);
+			}
+		}
+	);
+};
+
+var verifyAccessToken = function(callback) {
+	hubspot.getTokenInformation(
+		tokens.access_token,
+		function(response) {
+			if (response.status === "error") {
+				callback(false);
+			} else {
+				callback(true);
+			}
+		}
 	);
 };
 
@@ -93,5 +122,6 @@ var saveAccessTokens = function(tokenObject, callback) {
 
 module.exports = {
 	getAccessToken: getAccessToken,
-	maintainOauthConnection: maintainOauthConnection
+	maintainOauthConnection: maintainOauthConnection,
+	verifyAccessToken: verifyAccessToken
 };

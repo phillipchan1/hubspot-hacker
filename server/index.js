@@ -5,6 +5,7 @@ var express = require('express');
 var fs = require('fs');
 var https = require('https');
 var parser = require('body-parser');
+var oauth = require('./oauth/oauth');
 
 // create instance of the server
 var app = express();
@@ -12,6 +13,9 @@ var app = express();
 // get method for parsing body
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
+
+// refresh oauth tokens
+oauth.maintainOauthConnection();
 
 // client routes
 app.use('/', express.static('client/'));
@@ -50,8 +54,7 @@ app.all(
 	}
 	);
 
-// refresh oauth tokens
-require('./oauth/oauth').maintainOauthConnection();
+
 
 var httpsServer = https.createServer(
 	{
