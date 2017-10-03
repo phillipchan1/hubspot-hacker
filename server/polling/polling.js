@@ -3,13 +3,14 @@ let regionConverterPollImpl = require('./regionConverterPollImpl');
 var schedule = require('node-schedule');
 
 var regionConverterPoll = new schedule.RecurrenceRule();
-regionConverterPoll.dayOfWeek = [0, 6];
+regionConverterPoll.dayOfWeek = [new schedule.Range(0, 6)];
 regionConverterPoll.hour = 6;
 regionConverterPoll.minute = 0;
 
-regionConverterPollImpl();
+// regionConverterPollImpl();
 var j = schedule.scheduleJob(regionConverterPoll, function(){
-  regionConverterPollImpl();
+	console.log(`Starting regionConverterPoll CRON Job on ${new Date().toJSON().slice(0,10).replace(/-/g,'/')} at ${new Date().toLocaleTimeString()}`);
+	regionConverterPollImpl();
 });
 
 // run a poll to clean up contacts without a region
