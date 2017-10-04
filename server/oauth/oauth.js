@@ -44,7 +44,7 @@ var maintainOauthConnection = function() {
 			reportAccessTokenStatus();
 			refreshAccessToken();
 		},
-		600000
+		100000
 	);
 };
 
@@ -92,6 +92,7 @@ var refreshAccessToken = function(callback) {
 		},
 		function(err, response, body) {
 			var responseObj = JSON.parse(body);
+			console.log(responseObj);
 
 			if (err) {
 				callback('error');

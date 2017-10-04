@@ -28,25 +28,37 @@ module.exports = function() {
 					// get HS-formatted JSON of updated contacts with appropriate region
 					let contactsWithRegions = regionConverter.getRegionForContacts(contacts);
 
+					// get HS-formatted list of contacts to remove from list after done processing
+					let contactsToRemove = hubspot.createRemovalListFromContactList(contacts);
+
 					// update batch of them
 					hubspot.updateContacts(
 						contactsWithRegions,
 						null,
 						function(response) {
 							if (response.success === true) {
-								console.log("Batch of Contacts Updated Successfully");
 
-								if (responseFromContactList.responseData['has-more']) {
-									vidOffset = responseFromContactList.responseData['vid-offset'];
-									i();
+								hubspot.removeContactsFromList(
+									config.region_contact_list_to_clean_id,
+									contactsToRemove,
+									null,
+									function(response) {
 
-								}
+										console.log("Batch of Contacts Updated and Removed Successfully");
 
-								else {
-									let timeToFinish = moment.duration(new Date().getTime() - startTime);
+										if (responseFromContactList.responseData['has-more']) {
+											vidOffset = responseFromContactList.responseData['vid-offset'];
+											i();
 
-									console.log(`\nCOMPLETED THE LIST IN ${timeToFinish.humanize()}`);
-								}
+										}
+
+										else {
+											let timeToFinish = moment.duration(new Date().getTime() - startTime);
+
+											console.log(`\nCOMPLETED THE LIST IN ${timeToFinish.humanize()}`);
+										}
+									}
+								);
 							}
 						}
 					);

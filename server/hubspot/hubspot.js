@@ -2,6 +2,23 @@ var request = require('request');
 var tokens = require('../oauth/tokens.json');
 var urlUtils = require('../utils/urlUtils');
 
+var createRemovalListFromContactList = function(contactList) {
+	var removeList = {
+		"vids": []
+	};
+
+	contactList.forEach(
+		function(contact) {
+			removeList.vids.push(contact.vid);
+		}
+	);
+
+	console.log('removeList:');
+	console.log(removeList);
+
+	return removeList;
+};
+
 // get a single hubspot contact
 var getContact = function(id, callback) {
 	var success = false;
@@ -64,7 +81,7 @@ var getContactsInList = function(id, options, callback) {
 	);
 };
 
-getTokenInformation = function(token, callback) {
+var getTokenInformation = function(token, callback) {
 	request.get({
 		url: `https://api.hubapi.com/oauth/v1/access-tokens/${tokens.access_token}`,
 		headers: {
@@ -73,6 +90,43 @@ getTokenInformation = function(token, callback) {
 	}, function(err, response) {
 		callback(JSON.parse(response.body));
 	});
+};
+
+var removeContactsFromList = function(listId, listOfContactsToRemove, options, callback) {
+	var parameters = '';
+	var responseData = '';
+	var success = false;
+
+	if (options) {
+		parameters = urlUtils.serializeQueryParameters(options);
+	}
+
+	request(
+		{
+			method: 'POST',
+			json: true,
+			headers: {
+				'Authorization': `Bearer ${tokens.access_token}`,
+				'Content-Type': 'application/json'
+			},
+			uri: `https://api.hubapi.com/contacts/v1/lists/${listId}/remove/${parameters}`,
+			body: listOfContactsToRemove
+		},
+		function(err, response, body) {
+			if (response.statusCode === 200) {
+				callback({
+					success: true,
+					responseData: response.body
+				});
+			}
+
+			else {
+				callback({
+					success: false
+				});
+			}
+		}
+	);
 };
 
 // update a single hubspot contact
@@ -148,9 +202,11 @@ var updateContacts = function(contactsJSON, options, callback) {
 };
 
 module.exports = {
+	createRemovalListFromContactList: createRemovalListFromContactList,
 	getContact: getContact,
 	getContactsInList: getContactsInList,
 	getTokenInformation: getTokenInformation,
+	removeContactsFromList: removeContactsFromList,
 	updateContact: updateContact,
 	updateContacts: updateContacts
 };
