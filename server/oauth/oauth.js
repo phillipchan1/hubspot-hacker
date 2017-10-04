@@ -20,8 +20,6 @@ var getAccessToken = function(accessCode, callback) {
 		function(err, response, body) {
 			var responseObj = JSON.parse(body);
 
-			console.log(responseObj);
-
 			if (err) {
 				callback('error');
 			}
