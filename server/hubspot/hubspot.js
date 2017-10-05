@@ -181,8 +181,9 @@ var updateContacts = function(contactsJSON, options, callback) {
 			body: contactsJSON
 		},
 		function(err, response, body) {
-
-			if (response.statusCode === 202) {
+			if (err) {
+				responseData = err;
+			} else if (response.statusCode === 202) {
 				callback({
 					success: true,
 					responseData: response.body

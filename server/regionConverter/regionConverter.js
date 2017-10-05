@@ -14,7 +14,7 @@ var addRegionToContact = function(userId, callback) {
 			{
 				"properties": [
 					{
-						"property": "newregion",
+						"property": "region__c",
 						"value": region
 					}
 				]
@@ -63,7 +63,7 @@ var getRegionForContacts = function(contactsList) {
 				contact.vid,
 				[
 					{
-						"property": "newregion",
+						"property": "region__c",
 						"value": region
 					}
 				]

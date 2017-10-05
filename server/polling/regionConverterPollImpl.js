@@ -18,7 +18,7 @@ module.exports = function() {
 				config.region_contact_list_to_clean_id,
 				{
 					property: 'country',
-					count: 50,
+					count: 70,
 					vidOffset: vidOffset
 				},
 				function(response) {
@@ -36,6 +36,7 @@ module.exports = function() {
 						contactsWithRegions,
 						null,
 						function(response) {
+							console.log(response);
 							if (response.success === true) {
 
 								hubspot.removeContactsFromList(
@@ -59,6 +60,8 @@ module.exports = function() {
 										}
 									}
 								);
+							} else {
+								console.log('Contacts Failed to Update');
 							}
 						}
 					);
