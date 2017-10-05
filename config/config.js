@@ -4,5 +4,5 @@ module.exports = {
 	polling_frequency: 86400000, // once a day
 	redirect_uri: 'https://localhost:8443',
 	regionMapUrl: 'https://spreadsheets.google.com/feeds/list/1S_-x4lb9u1r4oPfoYnQNatKVc7uFIhp-PHmYyIca6x0/od6/public/basic',
-	region_contact_list_to_clean_id: 284
+	region_contact_list_to_clean_id: 18658
 };

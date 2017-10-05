@@ -13,9 +13,6 @@ var createRemovalListFromContactList = function(contactList) {
 		}
 	);
 
-	console.log('removeList:');
-	console.log(removeList);
-
 	return removeList;
 };
 
