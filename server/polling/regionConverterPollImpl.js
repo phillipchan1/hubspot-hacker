@@ -36,7 +36,6 @@ module.exports = function() {
 						contactsWithRegions,
 						null,
 						function(response) {
-							console.log(response);
 							if (response.success === true) {
 
 								hubspot.removeContactsFromList(
