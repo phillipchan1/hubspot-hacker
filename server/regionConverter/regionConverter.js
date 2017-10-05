@@ -80,9 +80,17 @@ var getRegionforContact = function(userId, callback) {
 		var country = '';
 		var contact = response.responseData;
 
-		if (contact.propertes && contact.properties.country) {
-			country = contact.properties.country.value;
+		try {
+			if (contact.properties && contact.properties.country) {
+				country = contact.properties.country.value;
+			}
 		}
+
+		catch(e) {
+			responseData = e;
+			console.log(e);
+		}
+
 
 		var region = getRegion(country);
 
