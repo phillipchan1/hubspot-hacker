@@ -34,8 +34,8 @@ var getAccessToken = function(accessCode, callback) {
 
 // maintain oauth connection throughout duration of application
 var maintainOauthConnection = function() {
-	reportAccessTokenStatus();
 	refreshAccessToken();
+	reportAccessTokenStatus();
 
 	setInterval(
 		function() {
