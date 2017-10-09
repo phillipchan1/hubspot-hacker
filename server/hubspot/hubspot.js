@@ -61,8 +61,6 @@ var getContactsInList = function(id, options, callback) {
 		parameters = urlUtils.serializeQueryParameters(options);
 	}
 
-	console.log(tokens.access_token);
-
 	request.get(
 		{
 			url: `https://api.hubapi.com/contacts/v1/lists/${id}/contacts/all${parameters}`,
