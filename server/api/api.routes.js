@@ -5,7 +5,7 @@ var router = express.Router();
 router.post(
 	'/login',
 	function(req, res, callback) {
-		oauth.getAccessToken(
+		oauth.getAccessTokenFromHubspot(
 			req.body.code,
 			function(response) {
 

@@ -1,6 +1,7 @@
 var request = require('request');
-var tokens = require('../oauth/tokens.json');
+var fs = require('fs');
 var urlUtils = require('../utils/urlUtils');
+var oauth = require('../oauth/oauth');
 
 var createRemovalListFromContactList = function(contactList) {
 	var removeList = {
@@ -16,10 +17,16 @@ var createRemovalListFromContactList = function(contactList) {
 	return removeList;
 };
 
+// gets access token stored in application
+var getAccessTokens = function() {
+	return JSON.parse(fs.readFileSync('server/oauth/tokens.json', 'utf8'));
+};
+
 // get a single hubspot contact
 var getContact = function(id, callback) {
 	var success = false;
 	var responseData = '';
+	var tokens = getAccessTokens();
 
 	request.get(
 		{
@@ -48,10 +55,13 @@ var getContact = function(id, callback) {
 
 var getContactsInList = function(id, options, callback) {
 	var parameters = '';
+	var tokens = getAccessTokens();
 
 	if (options) {
 		parameters = urlUtils.serializeQueryParameters(options);
 	}
+
+	console.log(tokens.access_token);
 
 	request.get(
 		{
@@ -79,6 +89,8 @@ var getContactsInList = function(id, options, callback) {
 };
 
 var getTokenInformation = function(token, callback) {
+	var tokens = getAccessTokens();
+
 	request.get({
 		url: `https://api.hubapi.com/oauth/v1/access-tokens/${tokens.access_token}`,
 		headers: {
@@ -93,6 +105,7 @@ var removeContactsFromList = function(listId, listOfContactsToRemove, options, c
 	var parameters = '';
 	var responseData = '';
 	var success = false;
+	var tokens = getAccessTokens();
 
 	if (options) {
 		parameters = urlUtils.serializeQueryParameters(options);
@@ -130,6 +143,7 @@ var removeContactsFromList = function(listId, listOfContactsToRemove, options, c
 var updateContact = function(id, userData, callback) {
 	var responseData = '';
 	var success = false;
+	var tokens = getAccessTokens();
 
 	request.post(
 		{
@@ -164,6 +178,7 @@ var updateContacts = function(contactsJSON, options, callback) {
 	var parameters = '';
 	var responseData = '';
 	var success = false;
+	var tokens = getAccessTokens();
 
 	if (options) {
 		parameters = urlUtils.serializeQueryParameters(options);
@@ -201,6 +216,7 @@ var updateContacts = function(contactsJSON, options, callback) {
 
 module.exports = {
 	createRemovalListFromContactList: createRemovalListFromContactList,
+	getAccessTokens: getAccessTokens,
 	getContact: getContact,
 	getContactsInList: getContactsInList,
 	getTokenInformation: getTokenInformation,

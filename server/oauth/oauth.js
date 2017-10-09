@@ -4,8 +4,8 @@ var hubspot = require('../hubspot/hubspot');
 var request = require('request');
 var tokens = require('./tokens.json');
 
-// get initial API access token
-var getAccessToken = function(accessCode, callback) {
+// get initial API access token from Hubspot
+var getAccessTokenFromHubspot = function(accessCode, callback) {
 	request.post(
 		'https://api.hubapi.com/oauth/v1/token',
 		{
@@ -120,7 +120,7 @@ var saveAccessTokens = function(tokenObject, callback) {
 };
 
 module.exports = {
-	getAccessToken: getAccessToken,
+	getAccessTokenFromHubspot: getAccessTokenFromHubspot,
 	maintainOauthConnection: maintainOauthConnection,
 	verifyAccessToken: verifyAccessToken
 };
