@@ -39,7 +39,7 @@ router.post('/', function(req, res, callback) {
 	}
 
 	// if payload is single object
-	else if (typeof payload === 'object' && payload.objectId) {
+	else if (typeof payload === 'object' && payload.objectId && listUtils.isJSON(payload)) {
 		regionConverter.addRegionToContact(payload.objectId);
 	}
 	else {
