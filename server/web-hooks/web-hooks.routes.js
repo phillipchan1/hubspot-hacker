@@ -11,7 +11,7 @@ router.post('/', function(req, res, callback) {
 	if (Array.isArray(payload)) {
 
 		// filter the payload just in case there are empty ones in the array
-		let filteredPayload = hubspot.filteredPayload(payload);
+		let filteredPayload = hubspot.filterPayload(payload);
 		var numOfPayloads = filteredPayload.length;
 
 		// throttle number of api calls with custom loop
