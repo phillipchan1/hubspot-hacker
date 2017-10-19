@@ -10,6 +10,7 @@ router.post('/', function(req, res, callback) {
 	// if payload is JSON object
 	if (Array.isArray(payload)) {
 
+		// filter the payload just in case there are empty ones in the array
 		let filteredPayload = hubspot.filteredPayload(payload);
 		var numOfPayloads = filteredPayload.length;
 
