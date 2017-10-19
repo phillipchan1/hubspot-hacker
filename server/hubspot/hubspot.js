@@ -17,6 +17,22 @@ var createRemovalListFromContactList = function(contactList) {
 	return removeList;
 };
 
+// removes
+var filterPayload = function(
+	payload // array
+	) {
+		var filteredPayload = [];
+
+		for (let x = 0; x < payload.length; x++) {
+			let currentPayload = payload[x];
+			if (!isPayloadEmpty(currentPayload)) {
+				filteredPayload.push(currentPayload);
+			}
+		}
+
+		return filteredPayload;
+};
+
 // gets access token stored in application
 var getAccessTokens = function() {
 	return JSON.parse(fs.readFileSync('server/oauth/tokens.json', 'utf8'));
@@ -97,6 +113,14 @@ var getTokenInformation = function(token, callback) {
 	}, function(err, response) {
 		callback(JSON.parse(response.body));
 	});
+};
+
+var isPayloadEmpty = function(payload) {
+	if (payload.objectId) {
+		return false;
+	} else {
+		return true;
+	}
 };
 
 var removeContactsFromList = function(listId, listOfContactsToRemove, options, callback) {
@@ -214,10 +238,12 @@ var updateContacts = function(contactsJSON, options, callback) {
 
 module.exports = {
 	createRemovalListFromContactList: createRemovalListFromContactList,
+	filterPayload: filterPayload,
 	getAccessTokens: getAccessTokens,
 	getContact: getContact,
 	getContactsInList: getContactsInList,
 	getTokenInformation: getTokenInformation,
+	isPayloadEmpty: isPayloadEmpty,
 	removeContactsFromList: removeContactsFromList,
 	updateContact: updateContact,
 	updateContacts: updateContacts

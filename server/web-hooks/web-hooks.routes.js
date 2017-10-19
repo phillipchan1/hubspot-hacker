@@ -5,19 +5,21 @@ var regionConverter = require('../regionConverter/regionConverter');
 
 router.post('/', function(req, res, callback) {
 	var payload = req.body;
-	var numOfPayloads = payload.length;
 	var occurences = 0;
 
 	// if payload is JSON object
 	if (Array.isArray(payload)) {
 
+		let filteredPayload = hubspot.filteredPayload(payload);
+		var numOfPayloads = filteredPayload.length;
+
 		// throttle number of api calls with custom loop
 		var interval = setInterval(function() {
 			if (occurences < numOfPayloads) {
-				console.log(payload[occurences]);
+				console.log(filteredPayload[occurences]);
 
-				let event = payload[occurences].subscriptionType;
-				let currentPayload = payload[occurences];
+				let event = filteredPayload[occurences].subscriptionType;
+				let currentPayload = filteredPayload[occurences];
 
 				if (event === 'contact.creation' || event === 'contact.propertyChange') {
 					regionConverter.addRegionToContact(currentPayload.objectId, function(response) {
