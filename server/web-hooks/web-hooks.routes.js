@@ -1,4 +1,5 @@
 var express = require('express');
+var hubspot = require('../hubspot/hubspot');
 var router = express.Router();
 var listUtils = require('../utils/listUtils');
 var regionConverter = require('../regionConverter/regionConverter');
