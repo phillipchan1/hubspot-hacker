@@ -6,6 +6,7 @@ var fs = require('fs');
 var https = require('https');
 var parser = require('body-parser');
 var oauth = require('./oauth/oauth');
+var regionConverter = require('./regionConverter/regionConverter');
 
 // create instance of the server
 var app = express();
@@ -32,12 +33,8 @@ app.use('/api/', apiRoutes);
 // run polls
 require('./polling/polling');
 
-require('./regionConverter/regionConverter')
-	.getRegionMap(
-		function(map) {
-			global.regionMap = map;
-		}
-	);
+// keep map of countries in application definition
+regionConverter.maintainUpdatedMap();
 
 // direct all other routes to client-side app
 app.all(

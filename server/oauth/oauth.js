@@ -42,7 +42,7 @@ var maintainOauthConnection = function() {
 			reportAccessTokenStatus();
 			refreshAccessToken();
 		},
-		100000
+		config.refresh_rate
 	);
 };
 

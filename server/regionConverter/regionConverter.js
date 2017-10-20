@@ -111,7 +111,11 @@ var getRegionMap = function(callback) {
 			if (err) {
 				console.log(err);
 			}
-			callback(JSON.parse(body));
+
+			if (callback) {
+				callback(JSON.parse(body));
+			}
+
 		}
 	);
 };
@@ -139,9 +143,31 @@ var getRegion = function(country) {
 	return region;
 };
 
+var maintainUpdatedMap = function() {
+	getRegionMap(
+		function(map) {
+			global.regionMap = map;
+			console.log(`Region Map Updated`);
+		}
+	);
+
+	setInterval(
+		function() {
+			getRegionMap(
+				function(map) {
+					global.regionMap = map;
+					console.log(`Region Map Updated`);
+				}
+			);
+		},
+		config.refresh_rate
+	);
+};
+
 module.exports = {
 	addRegionToContact: addRegionToContact,
 	getRegionForContacts: getRegionForContacts,
 	getRegion: getRegion,
-	getRegionMap: getRegionMap
+	getRegionMap: getRegionMap,
+	maintainUpdatedMap: maintainUpdatedMap
 };
