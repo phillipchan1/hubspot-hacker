@@ -25,6 +25,10 @@ module.exports = function() {
 					let contacts = response.responseData.contacts;
 					let responseFromContactList = response;
 
+					if (!listUtils.isNotEmpty(contacts)) {
+						return;
+					}
+
 					// get HS-formatted JSON of updated contacts with appropriate region
 					let contactsWithRegions = regionConverter.getRegionForContacts(contacts);
 
