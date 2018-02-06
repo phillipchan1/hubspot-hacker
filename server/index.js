@@ -22,9 +22,9 @@ oauth.maintainOauthConnection();
 app.use('/', express.static('client/'));
 
 // routes
-var webhookRoutes = require('./web-hooks/web-hooks.routes');
+// var webhookRoutes = require('./web-hooks/web-hooks.routes');
 
-app.use('/web-hooks/', webhookRoutes);
+// app.use('/web-hooks/', webhookRoutes);
 
 var apiRoutes = require('./api/api.routes.js');
 
@@ -37,21 +37,14 @@ require('./polling/polling');
 regionConverter.maintainUpdatedMap();
 
 // direct all other routes to client-side app
-app.all(
-	'/*',
-	function(req, res) {
-		res
-			.status(200)
-			.set(
-				{
-					'content-type': 'text/html; charset=utf-8'
-				}
-			)
-			.sendFile(process.cwd() + '/client/index.html');
-	}
-	);
-
-
+app.all('/*', function(req, res) {
+	res
+		.status(200)
+		.set({
+			'content-type': 'text/html; charset=utf-8'
+		})
+		.sendFile(process.cwd() + '/client/index.html');
+});
 
 var httpsServer = https.createServer(
 	{
@@ -62,16 +55,10 @@ var httpsServer = https.createServer(
 );
 
 // start server
-httpsServer.listen(
-	8443,
-	function() {
-		console.log('https server running at 8443');
-	}
-);
+httpsServer.listen(8443, function() {
+	console.log('https server running at 8443');
+});
 
-app.listen(
-	process.env.PORT || 80,
-	function() {
-		console.log('Service on running on 80');
-	}
-);
+app.listen(process.env.PORT || 80, function() {
+	console.log('Service on running on 80');
+});
